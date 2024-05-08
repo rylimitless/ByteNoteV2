@@ -6,9 +6,9 @@ part 'note.g.dart';
 class Note {
   Id id = Isar.autoIncrement; // you can also use id = null to auto increment
 
-  String? name;
+  String? name="";
 
   late DateTime dateCreated;
 
-  late String text;
+  String text="";
 }

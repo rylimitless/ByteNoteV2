@@ -1,10 +1,17 @@
 import 'package:bytenote/pages/note_pages.dart';
 import 'package:bytenote/database/database.dart';
+import 'package:bytenote/theme/theme.dart';
+import 'package:bytenote/theme/theme_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Database.initializeDatabase();
+  final Database db = Get.put(Database());
+  Get.put(ThemeController());
+
+  db.getNotes();
   runApp(const MyApp());
 }
 
@@ -14,15 +21,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+  final ThemeController tc = Get.find();
+
+    return Obx(()=>MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const NotePage()
-    );
+      title: 'ByteNote',
+      theme: tc.theme.value,
+      home: NotePage()
+    ));
   }
 }
 

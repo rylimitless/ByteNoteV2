@@ -18,13 +18,25 @@ class Database extends GetxController{
       [NoteSchema],
   directory: dir.path,
 );
+
+    
     }
   //Create
+
+  void tmp(){
+    var note = Note()..dateCreated = DateTime.now();
+    note.name = 'test';
+    note.text = 'boy';
+    addNote(note);
+    getNotes();
+  }
 
   void addNote(Note note) async{
       await isar.writeTxn(() async {
   await isar.notes.put(note);
     });
+
+    await getNotes();
   }
 
 
@@ -41,6 +53,7 @@ class Database extends GetxController{
 
   Future <void> updateNote(Note note) async{
     isar.notes.put(note);
+    await getNotes();
     return;
     
   }
@@ -51,10 +64,12 @@ class Database extends GetxController{
   Future <bool> deleteNote(id) async{
     bool success = false;
     await isar.writeTxn(() async {
-      success = await isar.notes.delete(123);
-      logger.i('Recipe deleted: $success');
+      success = await isar.notes.delete(id);
+      logger.i('Note deleted: $success');
+
 
 });
+await getNotes();
 
 return success;
   }
