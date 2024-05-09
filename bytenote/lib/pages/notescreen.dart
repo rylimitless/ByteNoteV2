@@ -19,6 +19,7 @@ class NoteScreen extends StatelessWidget{
   //It'll need a note object so it can add it's text to a screen.
 
   Widget build(BuildContext context){
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Notes'),
@@ -64,14 +65,10 @@ class NoteScreen extends StatelessWidget{
                 textAlign: TextAlign.justify,
                 style: const TextStyle(
                     color: Colors.grey,
-                    fontSize: 10
+                    fontSize: 12
                 ),
                 ),
             ],),
-            
-            //date
-        
-            //body
             const SizedBox(height: 20,),
         
             TextField(
@@ -84,7 +81,7 @@ class NoteScreen extends StatelessWidget{
             
           ),
           style: const TextStyle(
-            fontSize: 12
+            fontSize: 14
           ),
         ),
           ],),
