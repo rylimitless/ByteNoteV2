@@ -1,13 +1,14 @@
 import 'package:bytenote/acount_controller.dart';
 import 'package:bytenote/login.dart';
-import 'package:bytenote/models/note.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:bytenote/database/database.dart';
 
 
 class MyDrawer extends StatelessWidget{
 
   final AccountController acc  = Get.find();
+  final Database db = Get.find();
   MyDrawer({super.key});
   
   void syncFunction(){
@@ -24,12 +25,24 @@ class MyDrawer extends StatelessWidget{
             //Account
             DrawerTyle(title:'Notes',icon: const Icon(Icons.home),onTap: ()=>Navigator.pop(context),),
 
+            
+          Obx(()=> Visibility(
+                        visible: acc.isLoggedin.value,
+                        child: 
+                        DrawerTyle(title: 'Download Notes',icon: const Icon(Icons.download),onTap: (){ 
+                        // db.clean();
+                        acc.downloadNotes(db);             
+                      },),
+                      )),
+
             DrawerTyle(title: 'Sync Settings',icon: const Icon(Icons.sync),onTap: (){
               Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage()));
             },),
       
             DrawerTyle(title: 'Settings',icon: const Icon(Icons.settings),onTap: (){              
             },),
+
+            
 
             Obx(()=>Visibility(
               visible: acc.isLoggedin.value,

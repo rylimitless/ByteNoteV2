@@ -1,26 +1,28 @@
 
+import 'package:appwrite/models.dart';
+import 'package:bytenote/acount_controller.dart';
 import 'package:bytenote/components/drawer.dart';
+import 'package:bytenote/login.dart';
 import 'package:bytenote/pages/notescreen.dart';
-import 'package:bytenote/theme/theme_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:bytenote/models/note.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/web.dart';
 import 'package:get/get.dart';
 import 'package:bytenote/database/database.dart';
+import 'package:toastification/toastification.dart';
 
 
 class NotePage extends StatelessWidget {
 
   //Make database object
   final Database db = Get.find();
-  final l = [1,2,3,4,];
+  final AccountController acc = Get.find();
   
 
   NotePage({Key? key}) : super(key: key);
   Widget build(BuildContext context){
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
         drawer:MyDrawer(),
         appBar: AppBar(
           elevation: 0,
@@ -52,7 +54,36 @@ class NotePage extends StatelessWidget {
                   fontSize : 48
                 )
                 ),
-                IconButton(onPressed: (){
+                IconButton(onPressed: () async{
+                  print('About to upload ');
+                  if(acc.isLoggedin.value==false){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginPage()));
+                  }else {
+                      try{
+                      bool success = await acc.uploadNotes(db.allNotes);
+                      if(success){
+                        print('yess');
+                        toastification.show(
+                      
+                      context: context, // optional if you use ToastificationWrapper
+                      title: const Text('Notes Uploaded'),
+                      autoCloseDuration: const Duration(seconds: 2),
+                    );
+                      }else {
+                         toastification.show(
+                      
+                      context: context, // optional if you use ToastificationWrapper
+                      title: const Text('Notes Uploaded'),
+                      autoCloseDuration: const Duration(seconds: 1),
+                    );
+                        print('no');
+                      }
+                      // acc.doesDocumentExist();
+                  } on Execution {
+                    print('Not authoried');
+                  }
+                  }
+                  
                   //Check if user is logged and move to log in page if not
                 }, icon: const Icon(Icons.sync))
               ],
@@ -75,7 +106,7 @@ class NotePage extends StatelessWidget {
                     ),
                     margin: const EdgeInsets.only(top:10,left:25,right:25,bottom:25),
                     child: ListTile(
-                      title: Text(note.name),
+                      title: Text(note.name == null ? "Untitled": note.name ),
                       subtitle: Text(note.dateCreated.toString().substring(0,10),
                       style: const TextStyle(
                           fontSize: 10
@@ -96,7 +127,6 @@ class NotePage extends StatelessWidget {
             ),
           ))
         ],),
-      ),
-    );
+      );
   }
 }

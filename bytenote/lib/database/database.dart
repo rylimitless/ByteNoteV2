@@ -74,5 +74,8 @@ await getNotes();
 return success;
   }
 
-
+  void clean(){
+    isar.clear();
+    allNotes.clear();
+  }
 }

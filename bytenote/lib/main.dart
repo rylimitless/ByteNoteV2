@@ -1,10 +1,7 @@
 import 'package:bytenote/acount_controller.dart';
-import 'package:bytenote/login.dart';
 import 'package:bytenote/pages/note_pages.dart';
 import 'package:bytenote/database/database.dart';
-import 'package:bytenote/signup.dart';
 import 'package:bytenote/signup_controller.dart';
-import 'package:bytenote/theme/theme.dart';
 import 'package:bytenote/theme/theme_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
